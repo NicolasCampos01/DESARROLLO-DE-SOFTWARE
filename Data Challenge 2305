@@ -1,0 +1,62 @@
+#Data_Challenge 3
+""" Este código a través de programación orientada a objetos lee los datos de 
+de una tabla ASCII con información sobre exoplanetas (nombre, masa, radio y radio orbital) 
+y crea un gráfico de masa vs radio orbital."""
+
+
+#Importacion de librerías
+import csv
+import matplotlib.pyplot as plt 
+import numpy as np
+
+#Creación de clases 
+
+class Exoplaneta: #Crea un objeto llamado exoplaneta
+    def __init__(self, nombre, masa, radio, orbita):
+        """esta linea funcióin analiza los atributos del objeto"""
+        self.nombre = nombre 
+        self.masa = float(masa)
+        self.radio = float (radio)
+        self.orbita = float(orbita) 
+
+
+class TablaExoplanetas: #Crea un objeto llamado exoplaneta
+    def __init__(self):
+        self.exoplanetas =[] #lista vacía para almacenar datos
+
+    def agregar_exoplaneta(self, exoplaneta): 
+        """función que añade exoplanetas a la clase"""
+        self.exoplanetas.append(exoplaneta)
+
+    def leer_tabla_ascii(self,ruta_archivo):
+        """función que lee tabla ascii"""
+        with open(ruta_archivo,'r') as archivo:
+            reader = csv.reader(archivo, delimiter ='\t')
+            for fila in reader:
+                if len(fila) == 4:
+                    nombre, masa, radio, orbita = fila
+                    exoplaneta = Exoplaneta(nombre, masa, radio, orbita)
+                    self.agregar_exoplaneta(exoplaneta)
+
+    def graficar_masa_vs_orbita(self):
+        """Función que grafica los datos obtenidos de 
+        los atributos definidos anteriormente"""
+        masas = [exoplaneta.masa for exoplaneta in self.exoplanetas]
+        orbitas = [exoplaneta.orbita for exoplaneta in self.exoplanetas]
+
+        plt.scatter(orbitas, masas)
+        plt.xlabel('Radio Orbital')
+        plt.ylabel('Masa')
+        plt.title('Masa vs Radio Orbital de Exoplanetas')
+        plt.show()
+        
+
+
+# Crear una tabla de exoplanetas y leer la tabla ASCII
+tabla_exoplanetas = TablaExoplanetas()
+tabla_exoplanetas.leer_tabla_ascii('exoplanets_all.txt')
+
+# Graficar masa vs radio orbital
+tabla_exoplanetas.graficar_masa_vs_orbita()
+
+ 
